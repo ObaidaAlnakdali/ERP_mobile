@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { SafeAreaView, View, TextInput, Image, FlatList, StyleSheet, Text, StatusBar, Button, Pressable } from 'react-native';
+import { SafeAreaView, TouchableHighlight, View, TextInput, Image, FlatList, StyleSheet, Text, StatusBar, Button, Pressable } from 'react-native';
 import axios from 'axios';
 
 
@@ -27,27 +27,27 @@ export default function Employee() {
 
   const Item = ({ name }) => (
     <View style={styles.item}>
-      <Pressable style={styles.edit} >
+      <TouchableHighlight style={styles.edit} >
       <Image
         style={styles.edit}
         source={require('../assets/edit1.png')}
       />
-      </Pressable>
+      </TouchableHighlight>
       <Image
         style={styles.img}
         source={require('../assets/emp.jpg')}
       />
       <Text style={styles.title}>{name}</Text>
       <View style={styles.btnBody}>
-        <Pressable style={styles.btn} >
+        <TouchableHighlight style={styles.btn} >
           <Text style={styles.btnText}>KPI</Text>
-        </Pressable>
-        <Pressable style={styles.btn} >
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.btn} >
           <Text style={styles.btnText}>Project</Text>
-        </Pressable>
-        <Pressable style={styles.btn} >
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.btn} >
           <Text style={styles.btnText}>Graph</Text>
-        </Pressable>
+        </TouchableHighlight>
        
       </View>
     </View>
