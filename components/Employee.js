@@ -1,33 +1,48 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaView, TouchableHighlight, View, TextInput, Image, FlatList, StyleSheet, Text, StatusBar, Button, Pressable } from 'react-native';
 import axios from 'axios';
 
 
-export default function Employee() {
+export default function Employee({ navigation }) {
 
   const [employees, setEmployees] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
-  const [loading, setLoading] = useState(true)
+  const [filterEmployees, setFilterEmployees] = useState([]);
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const searchText = async (e) => {
-    const value = e.target.value;
-    const data = employees;
+  const filterEmp = (text) => {
+    if (text) {
+      newData = employees.filter((employee) => {
 
-    data = await data.filter((val) => {
-      if (value === '') {
-        return val
-      } else if ((val.first_name.toLowerCase().includes(value.toLowerCase())) || (val.last_name.toLowerCase().includes(searchValue.toLowerCase()))) {
-        return val
-      }
-    })
-    setEmployees(data)
-    console.log(data)
-   };
+        if ((employee.first_name.toLowerCase().includes(text.toLowerCase())) || (employee.last_name.toLowerCase().includes(text.toLowerCase()))) {
+          return employee
+        }
+      })
+      setFilterEmployees(newData)
+      setSearch(text)
+    } else {
+      setFilterEmployees(employees)
+      setSearch(text)
+    }
+  }
 
-  const Item = ({ name }) => (
+  const getEmployees = () => {
+    axios.get(`http://192.168.0.135:8000/api/employees`)
+      .then(res => { 
+        setEmployees(res.data.data);     
+        setFilterEmployees(res.data.data)
+      })
+      .catch(err => console.log(err))
+  }
+
+  const Item = ({ name, id }) => (
     <View style={styles.item}>
-      <TouchableHighlight style={styles.edit} >
+      <TouchableHighlight style={styles.edit} 
+      onPress={() => navigation.navigate('KPI', { id })}
+      >
       <Image
         style={styles.edit}
         source={require('../assets/edit1.png')}
@@ -39,13 +54,19 @@ export default function Employee() {
       />
       <Text style={styles.title}>{name}</Text>
       <View style={styles.btnBody}>
-        <TouchableHighlight style={styles.btn} >
+        <TouchableHighlight style={styles.btn} 
+        onPress={() => navigation.navigate('KpiReport', { id })}
+        >
           <Text style={styles.btnText}>KPI</Text>
         </TouchableHighlight>
-        <TouchableHighlight style={styles.btn} >
+        <TouchableHighlight style={styles.btn} 
+        onPress={() => navigation.navigate('ProjectReport', { id })}
+        >
           <Text style={styles.btnText}>Project</Text>
         </TouchableHighlight>
-        <TouchableHighlight style={styles.btn} >
+        <TouchableHighlight style={styles.btn} 
+        onPress={() => navigation.navigate('GraphReport', { id })}
+        >
           <Text style={styles.btnText}>Graph</Text>
         </TouchableHighlight>
        
@@ -53,14 +74,8 @@ export default function Employee() {
     </View>
   );
   const renderItem = ({ item }) => (
-    <Item name={item.first_name + ' ' + item.last_name} />
+    <Item name={item.first_name + ' ' + item.last_name} id={item.id} />
   );
-
-  const getEmployees = () => {
-    axios.get(`http://192.168.0.135:8000/api/employees`)
-      .then(res => { setEmployees(res.data.data); console.log(res.data.data) })
-      .catch(err => console.log(err))
-  }
 
   useEffect(async () => {
     await getEmployees();
@@ -71,11 +86,12 @@ export default function Employee() {
       <TextInput
           style={styles.search}
           placeholder="Search"
-          onChange={searchText}
+          value={search}
+          onChangeText={(text) => filterEmp(text)}
         />
         <FlatList
           style={styles.body}
-          data={employees}
+          data={filterEmployees}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
