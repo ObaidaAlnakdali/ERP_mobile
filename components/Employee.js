@@ -30,7 +30,7 @@ export default function Employee({ navigation }) {
   }
 
   const getEmployees = () => {
-    axios.get(`http://192.168.0.135:8000/api/employees`)
+    axios.get(`http://192.168.0.115:8000/api/employees`)
       .then(res => { 
         setEmployees(res.data.data);     
         setFilterEmployees(res.data.data)
@@ -73,6 +73,7 @@ export default function Employee({ navigation }) {
       </View>
     </View>
   );
+
   const renderItem = ({ item }) => (
     <Item name={item.first_name + ' ' + item.last_name} id={item.id} />
   );
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     position: 'absolute',
-    left: 5,
+    right: 5,
     top: 5,
     borderRadius: 50
   },
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
   },
   btnBody : {
     display:'flex',
-    flexDirection:'row-reverse'
+    flexDirection:'row'
   },
   btn: {
     backgroundColor:'#8AB038',

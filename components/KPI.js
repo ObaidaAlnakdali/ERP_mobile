@@ -5,6 +5,7 @@ import axios from 'axios';
 
 function KPI({ route }) {
   const  { id }  = route.params;
+  
   return (
     <View><Text>KPI empId: {JSON.stringify(id)}</Text></View>
   )
