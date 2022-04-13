@@ -35,6 +35,9 @@ export default function App() {
             style={styles.splashScreenLogo}
             source={require('./assets/logo-lightGreen.png')} />
           <Text style={styles.splashScreenText}>ERP_Codi</Text>
+          <Image
+            style={styles.loadingLogo}
+            source={require('./assets/loading4.gif')} />
         </View>
         :
         <Stack.Navigator initialRouteName="Employees">
@@ -59,9 +62,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  splashScreenLogo:{
+    width:150,
+    height:150,
+    marginTop:100,
+    marginBottom:30
+  },
   splashScreenText: {
     color: '#39451f',
     fontSize: 25,
+  },
+  loadingLogo:{
+    width:150,
+    height:150,
+    marginBottom:30
   },
   container: {
     display: 'flex',

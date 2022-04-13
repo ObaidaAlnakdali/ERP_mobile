@@ -46,6 +46,7 @@ export default function Employee({ navigation }) {
       .then(res => { 
         setEmployees(res.data.data);     
         setFilterEmployees(res.data.data)
+        setLoading(false)
       })
       .catch((err) => console.log(err));
   };
@@ -92,19 +93,26 @@ export default function Employee({ navigation }) {
   }, []);
 
   return (
-    <SafeAreaView >
+    <SafeAreaView style={styles.container}>
       <TextInput
         style={styles.search}
         placeholder="Search"
         value={search}
         onChangeText={(text) => filterEmp(text)}
       />
+
+{loading === true ?
+          <Image
+            style={styles.loadingLogo}
+            source={require('../assets/loading2.gif')} />
+        :
       <FlatList
         style={styles.body}
         data={filterEmployees}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
+      }
     </SafeAreaView>
   );
 }
@@ -177,5 +185,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
     width: "90%",
+  },  
+  loadingLogo:{
+    width:80,
+    height:80,
+    marginTop:200,
+    marginBottom:30
   },
 });

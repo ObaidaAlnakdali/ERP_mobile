@@ -21,21 +21,23 @@ import { ScrollView } from "react-native-virtualized-view";
 function KpiReport({ route }) {
   const { id } = route.params;
   const [dataReport, setDataReport] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getKpiReports = async () => {
-    let res = await axios.get(
-      `http://192.168.0.120:8000/api/employees/validKPIS/${id}`
-    );
-    try {
+    axios.get(`http://192.168.0.115:8000/api/employees/validKPIS/${id}`).then(res => {
       setDataReport(res.data.data.valid_kpi);
-    } catch (err) {
-      console.log(err);
-    }
+      setLoading(false);
+    }).catch((err) => console.log(err));
+
   };
   const Item = ({ name, rate }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{name}</Text>
-      <Text style={styles.title}>{rate}</Text>
+    <View style={styles.items}>
+      <View style={styles.item}>
+        <Text style={styles.title}>{name}</Text>
+      </View>
+      <View style={styles.item}>
+        <Text style={styles.title}>{rate}</Text>
+      </View>
     </View>
   );
   const renderItem = ({ item }) => (
@@ -52,12 +54,17 @@ function KpiReport({ route }) {
         <Text style={styles.navItem}>Rate</Text>
       </View>
       <View style={styles.parentbody}>
+        {loading === true ?
+          <Image
+            style={styles.loadingLogo}
+            source={require('../assets/loading2.gif')} />
+          :
           <FlatList
             style={styles.body}
             data={dataReport}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-          />
+          />}
       </View>
     </SafeAreaView>
   );
@@ -97,28 +104,40 @@ const styles = StyleSheet.create({
   parentbody: {
     backgroundColor: "#e5e5e5",
     width: "80%",
-    margin: 0,
-    padding:10,
+    marginVertical: 15,
+    padding: 10,
     borderRadius: 16,
-    height: 420,
-    display:'flex',
-    justifyContent:'center',
-    textAlign:'center'
+    height: '85%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  item: {
+  items: {
     margin: 6,
     display: "flex",
-    flexDirection:'row',
-    justifyContent:'space-around',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: "center",
     backgroundColor: "#fcfcfc",
-    paddingHorizontal:20,
-    paddingVertical:10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     marginHorizontal: 7,
     position: "relative",
     height: 40,
     borderRadius: 20
-    },
+  },
+  item: {
+    width: '30%',
+    marginHorizontal: 5,
+    display: "flex",
+    alignItems: "center",
+  },
+  loadingLogo: {
+    width: 80,
+    height: 80,
+    marginTop: 30,
+    marginBottom: 30,
+  },
 });
 
 export default KpiReport;

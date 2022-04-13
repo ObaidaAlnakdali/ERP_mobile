@@ -6,14 +6,15 @@ import axios from 'axios';
 function ProjectReport({ route }) {
   const [dataReport, setDataReport] = useState([])
   const [employee, setEmployee] = useState([])
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    axios.get(`http://192.168.0.124:8000/api/employees/reportProject/${id}`)
+    axios.get(`http://192.168.0.115:8000/api/employees/reportProject/${id}`)
       .then(response => {
-        console.log(response)
-        // console.log(response.data.data.projec_report.role[0])
         setDataReport(response.data.data.projec_report)
+        setLoading(false)
       })
-    axios.get(`http://192.168.0.124:8000/api/employees/${id}`)
+    axios.get(`http://192.168.0.115:8000/api/employees/${id}`)
       .then(response => {
         setEmployee(response.data.data)
       })
@@ -44,12 +45,18 @@ function ProjectReport({ route }) {
         <Text style={styles.navItem} >Project</Text>
         <Text style={styles.navItem} >Role</Text>
       </View>
-      <FlatList
-        style={styles.body}
-        data={dataReport}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
+      {loading === true ?
+        <Image
+          style={styles.loadingLogo}
+          source={require('../assets/loading2.gif')} />
+        :
+        <FlatList
+          style={styles.body}
+          data={dataReport}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+        />
+      }
     </SafeAreaView>
 
   )
@@ -126,5 +133,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 8,
     marginHorizontal: 10
-  }
+  },  
+  loadingLogo:{
+    width:80,
+    height:80,
+    marginTop:200,
+    marginBottom:30
+  },
 });

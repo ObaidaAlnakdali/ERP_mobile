@@ -1,25 +1,25 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, Dimensions, screenWidth } from 'react-native';
-import {LineChart, BarChart} from "react-native-chart-kit";
+import { SafeAreaView, Image, View, FlatList, StyleSheet, Text, Dimensions, screenWidth } from 'react-native';
+import { LineChart, BarChart } from "react-native-chart-kit";
 import axios from 'axios';
 
 
 
 function GraphReport({ route }) {
   const [dataReport, setDataReport] = useState([])
-  const  { id }  = route.params;
+  const [loading, setLoading] = useState(true);
+  const { id } = route.params;
 
   const getData = (async () => {
-    let res = await axios.get(`http://192.168.0.115:8000/api/employees/groupKpi/${id}`)
-    try {
-      setDataReport(res.data.data.group_kpi)
-    } catch (err) {
-      console.log(err)
-    }
+    axios.get(`http://192.168.0.115:8000/api/employees/groupKpi/${id}`)
+      .then(res => {
+        setDataReport(res.data.data.group_kpi)
+        setLoading(false)
+      }).catch((err) => console.log(err));
   });
 
-  const data ={
+  const data = {
     labels: [],
     datasets: [{ data: [] }],
   };
@@ -51,28 +51,33 @@ function GraphReport({ route }) {
           }}
         />
       </View>
-  )};
+    )
+  };
 
   const renderItem = ({ item }) => (
-    
+
     <Item name={item?.name} Data={item?.kpi} />
   );
-  
-  useEffect( () => {
-   getData()
+
+  useEffect(() => {
+    getData()
   }, []);
-  
+
   return (
     <View style={styleSheet.MainContainer}>
-
-       <FlatList
+      {loading === true ?
+        <Image
+          style={styleSheet.loadingLogo}
+          source={require('../assets/loading2.gif')} />
+        :
+        <FlatList
           style={styleSheet.body}
           data={dataReport}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
-        
-  </View>
+      }
+    </View>
   )
 }
 
@@ -83,20 +88,26 @@ const styleSheet = StyleSheet.create({
     justifyContent: 'center'
   },
   body: {
-    paddingHorizontal:20,
+    paddingHorizontal: 20,
     width: '100%',
-    paddingBottom:50
+    paddingBottom: 50
   },
-  chart:{
-    margin:15,
-    display:'flex',
-    flexDirection:'column',
-    alignItems:'center'
+  chart: {
+    margin: 15,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
-  chartText:{
-    textAlign:'center',
-    padding:10,
-  }
+  chartText: {
+    textAlign: 'center',
+    padding: 10,
+  },
+  loadingLogo: {
+    width: 80,
+    height: 80,
+    marginTop: 200,
+    marginBottom: 30
+  },
 });
 
 export default GraphReport
