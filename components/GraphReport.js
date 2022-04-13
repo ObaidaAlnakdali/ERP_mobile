@@ -19,12 +19,11 @@ function GraphReport({ route }) {
       }).catch((err) => console.log(err));
   });
 
-  const data = {
-    labels: [],
-    datasets: [{ data: [] }],
-  };
-
   const Item = ({ name, Data }) => {
+    const data = {
+      labels: [],
+      datasets: [{ data: [] }],
+    };
     Data.map(item => {
       data.labels.unshift(item.created_at.substring(0, 7))
       data.datasets[0].data.unshift(item.rate)
