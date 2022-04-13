@@ -30,7 +30,7 @@ export default function Employee({ navigation }) {
   }
 
   const getEmployees = () => {
-    axios.get(`http://192.168.0.135:8000/api/employees`)
+    axios.get(`http://172.20.10.2:8000/api/employees`)
       .then(res => { 
         setEmployees(res.data.data);     
         setFilterEmployees(res.data.data)
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     margin:5,
     borderRadius:8,
   },
-  btnText: {
+  btnText: {  
     color: '#ededed',
   },
   search: {
