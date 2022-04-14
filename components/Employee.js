@@ -46,12 +46,14 @@ export default function Employee({ navigation }) {
       .then(res => { 
         setEmployees(res.data.data);     
         setFilterEmployees(res.data.data)
+        console.log(res.data.data)
         setLoading(false)
       })
       .catch((err) => console.log(err));
   };
 
-  const Item = ({ name, id }) => (
+
+  const Item = ({ name, id, image }) => (
     <View style={styles.item}>
       <TouchableHighlight
         style={styles.edit}
@@ -60,6 +62,7 @@ export default function Employee({ navigation }) {
         <Image style={styles.edit} source={require("../assets/edit1.png")} />
       </TouchableHighlight>
       <Image style={styles.img} source={require("../assets/emp.jpg")} />
+      {/* <Image style={styles.img} source={`http://192.168.0.115:8000/image/${image}`} /> */}
       <Text style={styles.title}>{name}</Text>
       <View style={styles.btnBody}>
         <TouchableHighlight
@@ -85,7 +88,7 @@ export default function Employee({ navigation }) {
   );
 
   const renderItem = ({ item }) => (
-    <Item name={item.first_name + " " + item.last_name} id={item.id} />
+    <Item name={item.first_name + " " + item.last_name} id={item.id} image={item.image} />
   );
 
   useEffect(async () => {
