@@ -12,7 +12,7 @@ function GraphReport({ route }) {
   const { id } = route.params;
 
   const getData = (async () => {
-    axios.get(`http://192.168.0.115:8000/api/employees/groupKpi/${id}`)
+    axios.get(`http://192.168.0.109:8000/api/employees/groupKpi/${id}`)
       .then(res => {
         setDataReport(res.data.data.group_kpi)
         setLoading(false)

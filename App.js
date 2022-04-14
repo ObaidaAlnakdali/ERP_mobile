@@ -10,11 +10,11 @@ import Loading from './components/Loading'
 import GraphReport from './components/GraphReport';
 import KpiReport from './components/KpiReport';
 import ProjectReport from './components/ProjectReport';
+import Main from './components/Main';
+import AddKpi from './components/AddKpi';
 import * as SplashScreen from 'expo-splash-screen';
 import KPI from './components/KPI';
 const Stack = createNativeStackNavigator();
-
-
 
 export default function App() {
   const [loadingS, setLoadingS] = useState(true);
@@ -22,7 +22,7 @@ export default function App() {
   useEffect(async () => {
     setTimeout(() => {
       setLoadingS(false)
-    }, 5000);
+    }, 2000);
   }, []);
   return (<SafeAreaView style={styles.container}>
     {/* <View style={styles.header}>
@@ -40,13 +40,15 @@ export default function App() {
             source={require('./assets/loading4.gif')} />
         </View>
         :
-        <Stack.Navigator initialRouteName="Employees">
-          <Stack.Screen name="Employees" component={Employee} />
-          <Stack.Screen name="GraphReport" component={GraphReport} />
-          <Stack.Screen name="KpiReport" component={KpiReport} />
-          <Stack.Screen name="ProjectReport" component={ProjectReport} />
+        <Stack.Navigator initialRouteName="Main">
+          <Stack.Screen name="Main" component={Main} options={{ title: 'Main' }}/>
+          <Stack.Screen name="AddKpi" component={AddKpi} options={{ title: 'Add New KPIS' }}/>
+          <Stack.Screen name="Employees" component={Employee} options={{ title: 'Employee' }}/>
+          <Stack.Screen name="GraphReport" component={GraphReport} options={{ title: 'Graph Report' }}/>
+          <Stack.Screen name="KpiReport" component={KpiReport} options={{ title: 'Kpi Report' }}/>
+          <Stack.Screen name="ProjectReport" component={ProjectReport} options={{ title: 'Project Report' }}/>
           <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="KPI" component={KPI} />
+          <Stack.Screen name="KPI" component={KPI} options={{ title: 'Add KPI from Employee'}}/>
         </Stack.Navigator>}
     </NavigationContainer>
     {/* <Login /> */}

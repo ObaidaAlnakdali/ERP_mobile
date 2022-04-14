@@ -9,12 +9,12 @@ function ProjectReport({ route }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://192.168.0.115:8000/api/employees/reportProject/${id}`)
+    axios.get(`http://192.168.0.109:8000/api/employees/reportProject/${id}`)
       .then(response => {
         setDataReport(response.data.data.projec_report)
         setLoading(false)
       })
-    axios.get(`http://192.168.0.115:8000/api/employees/${id}`)
+    axios.get(`http://192.168.0.109:8000/api/employees/${id}`)
       .then(response => {
         setEmployee(response.data.data)
       })

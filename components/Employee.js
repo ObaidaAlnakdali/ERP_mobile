@@ -42,7 +42,7 @@ export default function Employee({ navigation }) {
   };
 
   const getEmployees = () => {
-    axios.get(`http://192.168.0.115:8000/api/employees`)
+    axios.get(`http://192.168.0.109:8000/api/employees`)
       .then(res => { 
         setEmployees(res.data.data);     
         setFilterEmployees(res.data.data)

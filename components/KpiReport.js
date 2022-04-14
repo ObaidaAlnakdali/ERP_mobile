@@ -24,7 +24,7 @@ function KpiReport({ route }) {
   const [loading, setLoading] = useState(true);
 
   const getKpiReports = async () => {
-    axios.get(`http://192.168.0.115:8000/api/employees/validKPIS/${id}`).then(res => {
+    axios.get(`http://192.168.0.109:8000/api/employees/validKPIS/${id}`).then(res => {
       setDataReport(res.data.data.valid_kpi);
       setLoading(false);
     }).catch((err) => console.log(err));
