@@ -42,11 +42,11 @@ export default function Employee({ navigation }) {
   };
 
   const getEmployees = () => {
-    axios.get(`http://192.168.1.109:8000/api/employees`)
+    axios.get(`http://192.168.0.115:8000/api/employees`)
       .then(res => { 
-        console.log(res);
         setEmployees(res.data.data);     
         setFilterEmployees(res.data.data)
+        setLoading(false)
       })
       .catch((err) => console.log(err));
   };
@@ -83,6 +83,7 @@ export default function Employee({ navigation }) {
       </View>
     </View>
   );
+
   const renderItem = ({ item }) => (
     <Item name={item.first_name + " " + item.last_name} id={item.id} />
   );
@@ -92,19 +93,26 @@ export default function Employee({ navigation }) {
   }, []);
 
   return (
-    <SafeAreaView >
+    <SafeAreaView style={styles.container}>
       <TextInput
         style={styles.search}
         placeholder="Search"
         value={search}
         onChangeText={(text) => filterEmp(text)}
       />
+
+{loading === true ?
+          <Image
+            style={styles.loadingLogo}
+            source={require('../assets/loading2.gif')} />
+        :
       <FlatList
         style={styles.body}
         data={filterEmployees}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
+      }
     </SafeAreaView>
   );
 }
@@ -123,8 +131,8 @@ const styles = StyleSheet.create({
   edit: {
     width: 40,
     height: 40,
-    position: "absolute",
-    left: 5,
+    position: 'absolute',
+    right: 5,
     top: 5,
     borderRadius: 50,
   },
@@ -148,9 +156,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginVertical: 15,
   },
-  btnBody: {
-    display: "flex",
-    flexDirection: "row-reverse",
+  btnBody : {
+    display:'flex',
+    flexDirection:'row'
   },
   btn: {
     backgroundColor: "#8AB038",
@@ -177,5 +185,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
     width: "90%",
+  },  
+  loadingLogo:{
+    width:80,
+    height:80,
+    marginTop:200,
+    marginBottom:30
   },
 });
